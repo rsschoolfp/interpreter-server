@@ -1,3 +1,9 @@
+setup:
+	stack setup
+	stack build
+
+dev-setup: setup
+	stack install ghcid
+
 dev:
-	@stack install ghcid --silent
 	@ghcid -T 'Main.main'

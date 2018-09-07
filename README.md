@@ -1,7 +1,7 @@
 # Lambda Calculus Interpreter Server
 
 ### to run the project:
- - type in console `stack build`
+ - type in console `make`
  - wait ~10-15 mins
  - type in console `stack exec app`
 ### what next:
@@ -11,7 +11,11 @@
 
 ## Development
 
-To automatically reload Scotty app after each change, run
+To get everything set up for development, first run
+
+    $ make dev-setup
+
+To run and automatically reload Scotty app after each change, run
 
     $ make dev
 
