@@ -2,7 +2,7 @@ module Main where
 
 import           Control.Monad                        (join)
 import           Control.Applicative                  ((<$>))
-import           Controllers.Home                     (home, login,
+import           Controllers.Home                     (toMainPage,
                                                        getParsedData)
 import           Data.Maybe                           (fromMaybe)
 import           Network.Wai.Middleware.RequestLogger (logStdoutDev)
@@ -19,5 +19,6 @@ main = do
         . fmap readMaybe <$> lookupEnv "PORT"
   scotty port $ do
          middleware $ staticPolicy (noDots >-> addBase "static/images") -- for favicon.ico
+         middleware $ staticPolicy (noDots >-> addBase "static/")       -- for index.html
          middleware logStdoutDev
-         home >> login >> getParsedData
+         toMainPage >> getParsedData

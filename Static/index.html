@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lambda Calculus Interpreter</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="description" content="Inspire Text">
+  <meta name="viewport" content="width=device-width">
+  <style>
+  main {
+    display: flex;
+    justify-content: center;
+  }
+  section {
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    max-width: 400px;
+    border: 1px solid black;
+  }
+  textarea {
+    min-height: 300px;
+    min-width: 150px;
+    max-width: 100%;
+  }
+  button {
+    align-self: flex-end;
+    width: 150px;
+    height: 40px;
+    margin: 10px 0;
+  }
+  </style>
+</head>
+<body>
+  <main>
+    <section>
+      <h2>source:</h2>
+      <textarea>((λ x (λ y x)) "Hello, world!")</textarea>
+      <button>Parse</button>
+    </section>
+    <section>
+      <h2>parsed:</h2>
+      <p></p>
+    </section>
+  </main>
+  <script>
+    const textarea = document.querySelector('textarea');
+    const button = document.querySelector('button');
+    const p = document.querySelector('p');
+    const handleSubmit = e =>
+      fetch('https://interpreter-server.herokuapp.com/parse?input=' + textarea.value)
+      // fetch('http://localhost:3000/parse?input=' + textarea.value)
+        .then(data => data.json())
+        .then(res => {
+          p.innerHTML = res.output;
+        });
+
+    button.addEventListener('click', handleSubmit);
+  </script>
+</body>
+</html>

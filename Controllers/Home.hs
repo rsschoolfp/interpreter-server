@@ -2,38 +2,37 @@
 {-# LANGUAGE DeriveGeneric #-}
 
 module Controllers.Home
-    ( home
-    , login
+    ( toMainPage
     , getParsedData
     ) where
 
 import           Views.Home   (homeView)
-import           Web.Scotty   (ScottyM, get, html, json, param)
+import           Web.Scotty
 import           Data.Aeson   (ToJSON)
 import           GHC.Generics
 import           Lib
 import           Parser
+import           Data.Text.Internal.Lazy
+
 
 data Post = Post { input :: String, output :: String } deriving Generic
 
 instance ToJSON Post
 
-home :: ScottyM ()
-home = get "/" homeView
-
-login :: ScottyM ()
-login = get "/login" $ html "login"
+-- home :: ScottyM ()
+-- home = get "/" homeView
 
 getParsedData :: ScottyM()
 getParsedData = get "/parse" $ do
     input <- param "input"
     json $ Post input $ parseString input
 
--- post "/api/articles" $ do
---     curUser <- Auth.requireUser
---     req <- parseJsonBody ("article" .: createArticleForm)
---     result <- stopIfError articleErrorHandler $ createArticle curUser req
---     json $ ArticleWrapper result
+toMainPage :: ScottyM ()
+toMainPage = get "/" $ do
+    -- origin <- header "Origin"
+    -- redirect $ origin ++ "/index.html"
+    redirect "https://interpreter-server.herokuapp.com/index.html"
+    -- redirect "http://localhost:3000/index.html"
 
 parseString:: String -> String
 parseString str = do
