@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 
 module Controllers.Home
-    ( toMainPage
+    ( home
     , getParsedData
     ) where
 
@@ -19,20 +19,13 @@ data Post = Post { input :: String, output :: String } deriving Generic
 
 instance ToJSON Post
 
--- home :: ScottyM ()
--- home = get "/" homeView
+home :: ScottyM ()
+home = get "/" homeView
 
 getParsedData :: ScottyM()
 getParsedData = get "/parse" $ do
     input <- param "input"
     json $ Post input $ parseString input
-
-toMainPage :: ScottyM ()
-toMainPage = get "/" $ do
-    -- origin <- header "Origin"
-    -- redirect $ origin ++ "/index.html"
-    redirect "https://interpreter-server.herokuapp.com/index.html"
-    -- redirect "http://localhost:3000/index.html"
 
 parseString:: String -> String
 parseString str = do

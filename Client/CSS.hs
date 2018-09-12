@@ -9,10 +9,27 @@ import           Data.Text.Lazy (Text)
 
 layoutCss :: Text
 layoutCss = render $ do
-  body ? minHeight (px 2000)
-  element ".jumbotron" ? (textAlign $ alignSide sideCenter)
-  element "#gmail" ? (marginLeft $ px 10)
 
+  element "main" ? do
+    display        flex
+    justifyContent center
 
+  element "section" ? do
+    display        flex
+    margin         (px 10) (px 10) (px 10) (px 10)
+    padding        (px 10) (px 10) (px 10) (px 10)
+    flexDirection column
+    width         (pct 50)
+    maxWidth      (px 400)
+    border        solid (px 1) black
 
+  element "textarea" ? do
+    minHeight     (px 300)
+    minWidth      (px 150)
+    maxWidth      (pct 100)
 
+  element "button" ? do
+    alignSelf     flexEnd
+    width         (px 150)
+    height        (px 40)
+    margin        (px 10) (px 0) (px 10) (px 0)

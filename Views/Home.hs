@@ -8,6 +8,7 @@ import           Data.Text.Lazy              (toStrict)
 import           Prelude                     hiding (div, head, id)
 import           Text.Blaze.Html             (Html, toHtml)
 import           Text.Blaze.Html5            (Html, a, body, button,
+                                              textarea, main, section,
                                               dataAttribute, div, docTypeHtml,
                                               form, h1, h2, head, input, li,
                                               link, meta, p, script, style,
@@ -33,30 +34,18 @@ layout t b = docTypeHtml $ do
              link ! href "//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" ! rel  "stylesheet" ! media "screen"
              style $ pet $ toStrict layoutCss
            body $ do
-             navBar >> b
+             b
              script ! src "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" $ mempty
              script ! src "//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js" $ mempty
+             script "const textarea = document.querySelector('textarea');const button = document.querySelector('button');const p = document.querySelector('p');const handleSubmit = e =>fetch('https://interpreter-server.herokuapp.com/parse?input=' + textarea.value).then(data => data.json()).then(res => {p.innerHTML = res.output;}).catch(err => {p.innerHTML = err;});button.addEventListener('click', handleSubmit);"
 
 homeView :: ActionM ()
 homeView = blaze $ layout "home" $ do
-             div ! class_ "container" $ do
-               div ! class_ "jumbotron" $ do
-                 h1 "Scotty Starter"
-                 p "Welcome to the Scotty Starter template, equipped with Twitter Bootstrap 3.0 and HTML5 boilerplate"
-                 p $ do a ! class_ "btn btn-lg btn-primary" ! id "fb" ! href "#navbar" $ "Facebook"
-                        a ! class_ "btn btn-lg btn-danger" ! id "gmail" ! href "#navbar" $ "Gmail"
-
-navBar :: Html
-navBar = div ! class_ "navbar navbar-default navbar-static-top" $ div ! class_ "container" $ do
-           div ! class_ "navbar-header" $ do
-             button ! type_ "button"
-                    ! class_ "navbar-toggle" ! dataAttribute "toggle" "collapse" ! dataAttribute "target" ".navbar-collapse" $ do
-               a ! class_ "navbar-brand" ! href "#" $ "λ"
-           div ! class_ "navbar-collapse collapse" $ ul ! class_ "nav navbar-nav" $ do
-             li ! class_ "active" $ a ! href "#" $ "Home"
-             li $ a ! href "#about" $ "About"
-             li $ a ! href "#contact" $ "Contact"
-
-
-
-
+             main $ do
+               section $ do
+                 h2 "source:"
+                 textarea "((λ x (λ y x)) \"Hello, world!\")"
+                 button "Parse"
+               section $ do
+                 h2 "parsed:"
+                 p ""
