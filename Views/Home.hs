@@ -37,7 +37,7 @@ layout t b = docTypeHtml $ do
              b
              script ! src "//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" $ mempty
              script ! src "//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js" $ mempty
-             script "const textarea = document.querySelector('textarea');const button = document.querySelector('button');const p = document.querySelector('p');const handleSubmit = e =>fetch('https://interpreter-server.herokuapp.com/parse?input=' + textarea.value).then(data => data.json()).then(res => {p.innerHTML = res.output;}).catch(err => {p.innerHTML = err;});button.addEventListener('click', handleSubmit);"
+             script "const textarea=document.querySelector('textarea');const evalButton=document.querySelector('.eval-button');const parseButton=document.querySelector('.parse-button');const p=document.querySelector('p');const handleSubmit=action=>e=>fetch(location.origin+'/'+action+'?input='+textarea.value).then(data=>data.json()).then(res=>{p.innerHTML=res.output;}).catch(err=>{p.innerHTML=err;});parseButton.addEventListener('click',handleSubmit('parse'));evalButton.addEventListener('click',handleSubmit('eval'));"
 
 homeView :: ActionM ()
 homeView = blaze $ layout "home" $ do
@@ -45,7 +45,9 @@ homeView = blaze $ layout "home" $ do
                section $ do
                  h2 "source:"
                  textarea "((λ x (λ y x)) \"Hello, world!\")"
-                 button "Parse"
+                 div ! class_ "buttons-wrapper" $ do
+                   button "Eval"  ! class_ "eval-button"
+                   button "Parse" ! class_ "parse-button"
                section $ do
                  h2 "parsed:"
                  p ""

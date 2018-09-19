@@ -2,8 +2,8 @@ module Main where
 
 import           Control.Monad                        (join)
 import           Control.Applicative                  ((<$>))
-import           Controllers.Home                     (home,
-                                                       getParsedData)
+import           Controllers.Home                     (home, getParsedData,
+                                                       getEvaledData)
 import           Data.Maybe                           (fromMaybe)
 import           Network.Wai.Middleware.RequestLogger (logStdoutDev)
 import           Network.Wai.Middleware.Static        (addBase, noDots,
@@ -20,4 +20,4 @@ main = do
   scotty port $ do
          middleware $ staticPolicy (noDots >-> addBase "static/images") -- for favicon.ico
          middleware logStdoutDev
-         home >> getParsedData
+         home >> getParsedData >> getEvaledData
